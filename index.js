@@ -5,6 +5,7 @@ async function execute() {
     try {
         // Get token.
         const token = core.getInput("repo-access-token", { required: true });
+        const context = github.context;
     
         // Check if PR payload exists.
         if (context.payload.pull_request === undefined) {
@@ -20,8 +21,8 @@ async function execute() {
         } else {
             const octokit = github.getOctokit(token);
             await octokit.rest.issues.addAssignees({
-                owner: github.context.repo.owner,
-                repo: github.context.repo.repo,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
                 issue_number: number,
                 assignees: [author]
             });
